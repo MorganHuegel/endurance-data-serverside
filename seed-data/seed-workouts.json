@@ -1,0 +1,108 @@
+[
+  {
+    "userId": "000000000000000000000000",
+    "_id": "111111111111111111111100",
+    "date": 1533302675,
+    "totalDistance": {"amount": 5, "unit": "miles"},
+    "totalTime": {"amount": 39, "unit": "minutes"},
+    "averageHeartrate": 155,
+    "maxHeartrate": 173,
+    "hoursOfSleep": 9
+  },
+  {
+    "userId": "000000000000000000000000",
+    "_id": "111111111111111111111101",
+    "date": 1533216275,
+    "totalDistance": {"amount": 3, "unit": "miles"},
+    "totalTime": {"amount": 21, "unit": "minutes"},
+    "averageHeartrate": 165,
+    "maxHeartrate": 181,
+    "hoursOfSleep": 8
+  },
+  {
+    "userId": "000000000000000000000000",
+    "_id": "111111111111111111111102",
+    "date": 1533129875,
+    "totalDistance": {"amount": 6, "unit": "miles"},
+    "totalTime": {"amount": 45, "unit": "minutes"},
+    "averageHeartrate": 152,
+    "maxHeartrate": 171,
+    "hoursOfSleep": 10
+  },
+  {
+    "userId": "000000000000000000000000",
+    "_id": "111111111111111111111103",
+    "date": 1532957075,
+    "totalDistance": {"amount": 4.5, "unit": "miles"},
+    "totalTime": {"amount": 40, "unit": "minutes"},
+    "averageHeartrate": 141,
+    "maxHeartrate": 150,
+    "hoursOfSleep": 7.5
+  },
+
+  {
+    "userId": "000000000000000000000001",
+    "_id": "111111111111111111111104",
+    "date": 1533302675,
+    "totalTime": {"amount": 2, "unit": "hours"},
+    "averagePace": {"amount": 17.1, "unit": "mph"},
+    "averageWatts": 131,
+    "maximumWatts": 266,
+    "tss": 121,
+    "bodyWeight": 171
+  },
+  {
+    "userId": "000000000000000000000001",
+    "_id": "111111111111111111111105",
+    "date": 1533216275,
+    "totalTime": {"amount": 2.25, "unit": "hours"},
+    "averagePace": {"amount": 18.2, "unit": "mph"},
+    "averageWatts": 156,
+    "maximumWatts": 235,
+    "tss": 181,
+    "bodyWeight": 169
+  },
+  {
+    "userId": "000000000000000000000001",
+    "_id": "111111111111111111111106",
+    "date": 1533129875,
+    "totalTime": {"amount": 3.5, "unit": "hours"},
+    "averagePace": {"amount": 17.9, "unit": "mph"},
+    "averageWatts": 152,
+    "maximumWatts": 301,
+    "tss": 271,
+    "bodyWeight": 166
+  },
+  {
+    "userId": "000000000000000000000001",
+    "_id": "111111111111111111111107",
+    "date": 1532957075,
+    "totalTime": {"amount": 3, "unit": "hours"},
+    "bodyWeight": 170
+  },
+
+
+  {
+    "userId": "000000000000000000000003",
+    "_id": "111111111111111111111108",
+    "date": 1438262675,
+    "totalDistance": {"amount": 15, "unit": "miles"},
+    "totalTime": {"amount": 97, "unit": "minutes"},
+    "averagePace": {"amount": 7.5, "unit": "min/mile"},
+    "totalElevation": {"amount": 1001, "unit": "feet"},
+    "averageHeartrate": 161,
+    "maxHeartrate": 201,
+    "tss": 130,
+    "minutesStretching": 45,
+    "minutesFoamRollingMassage": 45,
+    "minutesCore": 20,
+    "injuryRating": 2,
+    "sorenessRating": 5,
+    "stressRating": 2,
+    "bodyWeight": 138,
+    "dietRating": 2,
+    "hoursOfSleep": 10.5,
+    "waterDrank": {"amount": 128, "unit": "ounces"},
+    "notes": "Had to take a bathroom break halfway through. Beans and salsa was a bad choice for breakfast"
+  }
+]

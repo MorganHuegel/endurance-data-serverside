@@ -1,0 +1,46 @@
+[
+  {
+    "_id": "000000000000000000000000",
+    "username": "bigRudy66",
+    "password": "$2a$08$A3dXeEQLFBxE20x8wnPkku7bz8LDsd2.Uj8xfziiPgs4/3lj6IUt6",
+    "email": "bigRudy@gmail.com",
+    "preferences": [],
+    "workouts": [
+      "111111111111111111111100", 
+      "111111111111111111111101", 
+      "111111111111111111111102", 
+      "111111111111111111111103"
+    ]
+  },
+  {
+    "_id": "000000000000000000000001",
+    "username": "saltySally",
+    "password": "$2a$08$A3dXeEQLFBxE20x8wnPkku7bz8LDsd2.Uj8xfziiPgs4/3lj6IUt6",
+    "email": "",
+    "preferences": [],
+    "workouts": [
+      "111111111111111111111104", 
+      "111111111111111111111105", 
+      "111111111111111111111106", 
+      "111111111111111111111107"
+    ]
+  },
+  {
+    "_id": "000000000000000000000002",
+    "username": "meb123",
+    "password": "$2a$08$A3dXeEQLFBxE20x8wnPkku7bz8LDsd2.Uj8xfziiPgs4/3lj6IUt6",
+    "email": "meb@yahoo.com",
+    "preferences": ["totalDistance", "averagePace", "totalTime"],
+    "workouts": []
+  },
+  {
+    "_id": "000000000000000000000003",
+    "username": "nickp",
+    "password": "$2a$08$A3dXeEQLFBxE20x8wnPkku7bz8LDsd2.Uj8xfziiPgs4/3lj6IUt6",
+    "email": "nickpezza@pizza.com",
+    "preferences": ["totalDistance", "averagePace", "totalTime", "averageHeartrate", "maxHeartrate", "hoursOfSleep", "minutesStretching"],
+    "workouts": [
+      "111111111111111111111108"
+    ]
+  }
+]
