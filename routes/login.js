@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const loginRouter = express.Router();
 
-const {jwtAuthorize, createJwtToken, jwtRefresh} = require('../auth/jwt');
+const { createJwtToken, verifyTokenMiddleware } = require('../auth/jwt');
 
 const User = require('../db-models/users-model');
 const Workout = require('../db-models/workouts-model');
@@ -28,6 +28,17 @@ loginRouter.post('/', (req, res, next) => {
   const username = req.body.username;
   const submittedPassword = req.body.password;
 
+  if(submittedPassword.length < 8) {
+    const err = new Error('Passwords are at least 8 characters in length.');
+    err.status = 400;
+    return next(err);
+  }
+  if(submittedPassword.length > 72) {
+    const err = new Error('Passwords are less than 72 characters in length.');
+    err.status = 400;
+    return next(err);
+  }
+
   User.findOne({username}).select({'password': true})
     .then(userInfo => {
 
@@ -48,16 +59,26 @@ loginRouter.post('/', (req, res, next) => {
         return Promise.reject(err);
       }
 
-      return User.findOne({username}).populate('workouts').sort({date: 'DESC'});
+      return createJwtToken(username);
+      //return User.findOne({username}).populate('workouts').sort({date: 'DESC'});
     })
-    .then(userData => {
-      res.json(userData);
+    .then(token => {
+      res.json(token);
     })
     .catch(err => {
       return next(err);
     });
-  
+});
 
+loginRouter.get('/refresh', verifyTokenMiddleware, (req, res, next) => {
+  const user = req.username;
+  console.log('USER', user);
+
+  try {
+    return res.json(createJwtToken(user));
+  } catch (e) {
+    return next(e);
+  }
 });
 
 module.exports = loginRouter;

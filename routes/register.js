@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 const registerRouter = express.Router();
 
 const User = require('../db-models/users-model');
+const { createJwtToken } = require('../auth/jwt');
+
 
 registerRouter.post('/', (req, res, next) => {
   const {username, password} = req.body;
@@ -23,7 +25,6 @@ registerRouter.post('/', (req, res, next) => {
     err.status = 400;
     return next(err);
   }
-
 
   //validate that incoming password exists
   if(!password){
@@ -46,7 +47,6 @@ registerRouter.post('/', (req, res, next) => {
     return next(err);
   }
 
-
   //encrypts password, then stores in User collection of database
   bcrypt.hash(password, 8)
     .then(hashedPassword => {
@@ -57,8 +57,12 @@ registerRouter.post('/', (req, res, next) => {
         preferences: []
       });
     })
-    .then(dbResponse => {
-      return res.json(dbResponse);
+    //creates web token, sends it back to client-side
+    .then( () => {
+      return createJwtToken(username);
+    })
+    .then(token => {
+      return res.json(token);
     })
     .catch(err => {
       if(err.code === 11000){   //error code 11000 comes from database error

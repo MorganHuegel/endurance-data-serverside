@@ -10,6 +10,7 @@ mongoose.Promise = global.Promise;
 
 const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
+const workoutRouter = require('./routes/workouts');
 const {CLIENT_ORIGIN, MONGODB_URI, PORT} = require('./config');
 
 
@@ -20,6 +21,7 @@ app.use(cors({origin: CLIENT_ORIGIN}));
 
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
+app.use('/workouts', workoutRouter);
 
 
 /*  If end of pipeline with no errors yet, 
