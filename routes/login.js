@@ -48,7 +48,7 @@ loginRouter.post('/', (req, res, next) => {
         return Promise.reject(err);
       }
 
-      return User.findOne({username}).populate('workouts');
+      return User.findOne({username}).populate('workouts').sort({date: 'DESC'});
     })
     .then(userData => {
       res.json(userData);

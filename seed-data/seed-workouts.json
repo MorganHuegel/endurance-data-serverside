@@ -2,7 +2,7 @@
   {
     "userId": "000000000000000000000000",
     "_id": "111111111111111111111100",
-    "date": 1533302675,
+    "date": 1533302675000,
     "totalDistance": {"amount": 5, "unit": "miles"},
     "totalTime": {"amount": 39, "unit": "minutes"},
     "averageHeartrate": 155,
@@ -12,7 +12,7 @@
   {
     "userId": "000000000000000000000000",
     "_id": "111111111111111111111101",
-    "date": 1533216275,
+    "date": 1533216275000,
     "totalDistance": {"amount": 3, "unit": "miles"},
     "totalTime": {"amount": 21, "unit": "minutes"},
     "averageHeartrate": 165,
@@ -22,7 +22,7 @@
   {
     "userId": "000000000000000000000000",
     "_id": "111111111111111111111102",
-    "date": 1533129875,
+    "date": 1533129875000,
     "totalDistance": {"amount": 6, "unit": "miles"},
     "totalTime": {"amount": 45, "unit": "minutes"},
     "averageHeartrate": 152,
@@ -32,7 +32,27 @@
   {
     "userId": "000000000000000000000000",
     "_id": "111111111111111111111103",
-    "date": 1532957075,
+    "date": 1532957075000,
+    "totalDistance": {"amount": 4.5, "unit": "miles"},
+    "totalTime": {"amount": 40, "unit": "minutes"},
+    "averageHeartrate": 141,
+    "maxHeartrate": 150,
+    "hoursOfSleep": 7.5
+  }, 
+  {
+    "userId": "000000000000000000000000",
+    "_id": "111111111111111111111198",
+    "date": 1332950075000,
+    "totalDistance": {"amount": 9, "unit": "miles"},
+    "totalTime": {"amount": 70, "unit": "minutes"},
+    "averageHeartrate": 140,
+    "maxHeartrate": 146,
+    "hoursOfSleep": 8
+  },
+  {
+    "userId": "000000000000000000000000",
+    "_id": "111111111111111111111199",
+    "date": 1332957075000,
     "totalDistance": {"amount": 4.5, "unit": "miles"},
     "totalTime": {"amount": 40, "unit": "minutes"},
     "averageHeartrate": 141,
@@ -40,10 +60,11 @@
     "hoursOfSleep": 7.5
   },
 
+
   {
     "userId": "000000000000000000000001",
     "_id": "111111111111111111111104",
-    "date": 1533302675,
+    "date": 1533302675000,
     "totalTime": {"amount": 2, "unit": "hours"},
     "averagePace": {"amount": 17.1, "unit": "mph"},
     "averageWatts": 131,
@@ -54,7 +75,7 @@
   {
     "userId": "000000000000000000000001",
     "_id": "111111111111111111111105",
-    "date": 1533216275,
+    "date": 1533216275000,
     "totalTime": {"amount": 2.25, "unit": "hours"},
     "averagePace": {"amount": 18.2, "unit": "mph"},
     "averageWatts": 156,
@@ -65,7 +86,7 @@
   {
     "userId": "000000000000000000000001",
     "_id": "111111111111111111111106",
-    "date": 1533129875,
+    "date": 1533129875000,
     "totalTime": {"amount": 3.5, "unit": "hours"},
     "averagePace": {"amount": 17.9, "unit": "mph"},
     "averageWatts": 152,
@@ -76,7 +97,7 @@
   {
     "userId": "000000000000000000000001",
     "_id": "111111111111111111111107",
-    "date": 1532957075,
+    "date": 1532957075000,
     "totalTime": {"amount": 3, "unit": "hours"},
     "bodyWeight": 170
   },
@@ -85,7 +106,7 @@
   {
     "userId": "000000000000000000000003",
     "_id": "111111111111111111111108",
-    "date": 1438262675,
+    "date": 1438262675000,
     "totalDistance": {"amount": 15, "unit": "miles"},
     "totalTime": {"amount": 97, "unit": "minutes"},
     "averagePace": {"amount": 7.5, "unit": "min/mile"},
