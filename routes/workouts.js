@@ -9,15 +9,19 @@ const Workout = require('../db-models/workouts-model');
 workoutRouter.get('/', verifyTokenMiddleware, (req, res, next) => {
   const user = req.username;
 
-  return User.find({username: user})
+  return User.findOne({username: user})
     .populate('workouts')
     .sort({'workouts.date': 'desc'})
     .then(userData => {
-      /* TO-DO: put a check here that validates that the user still exists.
-      (could have a valid token to a deleted user) */
-      return res.json(userData);
+      if(!userData.id){
+        const err = new Error('That user no longer exists.');
+        err.status = 400;
+        return next(err);
+      }
+      return res.json(userData).status(200);
     })
     .catch(err => next(err));
 });
+
 
 module.exports = workoutRouter;

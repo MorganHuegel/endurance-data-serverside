@@ -59,6 +59,16 @@
     "maxHeartrate": 150,
     "hoursOfSleep": 7.5
   },
+  {
+    "userId": "000000000000000000000000",
+    "_id": "111111111111111111111197",
+    "date": 1032957075000,
+    "totalDistance": {"amount": 4.5, "unit": "miles"},
+    "totalTime": {"amount": 40, "unit": "minutes"},
+    "averageHeartrate": 141,
+    "maxHeartrate": 150,
+    "hoursOfSleep": 7.5
+  },
 
 
   {

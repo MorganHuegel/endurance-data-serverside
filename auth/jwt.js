@@ -33,7 +33,7 @@ function verifyTokenMiddleware (req, res, next) {
   const currentUser = jwtAuthorize(tokenValue);
 
   if(!currentUser){
-    const err = new Error('Unauthorized. Please login to receive an updated token.');
+    const err = new Error('Please login to receive an updated token.');
     err.status = 401;
     return next(err);
   } else {
