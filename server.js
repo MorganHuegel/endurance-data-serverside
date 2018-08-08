@@ -37,7 +37,6 @@ app.use((req, res, next) => {
 otherwise, send back general error citing server's fault */
 app.use((err, req, res, next) => {
   if (err.status){
-    console.log('ERR', err);
     //const errBody = Object.assign({}, err, {message: err.message});
     res.status(err.status).json({
       message: err.message,

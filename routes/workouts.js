@@ -1,5 +1,6 @@
 'use strict';
 const express = require('express');
+const mongoose = require('mongoose');
 const workoutRouter = express.Router();
 
 const { verifyTokenMiddleware } = require('../auth/jwt');
@@ -19,6 +20,46 @@ workoutRouter.get('/', verifyTokenMiddleware, (req, res, next) => {
         return next(err);
       }
       return res.json(userData).status(200);
+    })
+    .catch(err => next(err));
+});
+
+
+workoutRouter.delete('/:id', verifyTokenMiddleware, (req, res, next) => {
+  const user = req.username; //from token (middleware)
+  const workoutId = req.params.id;
+  let userId;
+
+  if(!mongoose.Types.ObjectId.isValid(workoutId)){
+    const err = new Error('ID in parameters is not valid');
+    err.status = 422;
+    return next(err);
+  }
+
+  // gets the userId from the username in the token
+  return User.findOne({username: user})
+    .then(userObj => {
+      userId = userObj.id;
+      
+      // deletes workout only if ID in parameters 
+      // belongs to the user in the webtoken
+      return Workout.findOneAndDelete({userId, _id: workoutId});
+    })
+    .then( successfulDelete => {
+      console.log('SUCCESSFUL DELETE', successfulDelete);
+      if(!successfulDelete){
+        const err = new Error('Workout ID not found.');
+        err.status = 404;
+        return Promise.reject(err);
+      }
+      return User.findOneAndUpdate(
+        {_id: userId},
+        {$pull: {workouts: workoutId}},
+        {new: true}
+      );
+    })
+    .then(result => {
+      return res.sendStatus(204);
     })
     .catch(err => next(err));
 });
