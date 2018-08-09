@@ -81,8 +81,6 @@ usersRouter.put('/', verifyTokenMiddleware, (req, res, next) => {
   const username = req.username;
   const updateBody = req.body;
 
-  console.log('USERNAME____', username, 'UPDATE BODY_____',updateBody)
-
   const possibleUpdates = [
     'username', 
     'password', 

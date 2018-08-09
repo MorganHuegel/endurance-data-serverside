@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const workoutSchema = new mongoose.Schema({
   userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-  date: Date,    //Using seconds epoch time; this might need changed to Number input...
+  date: {type: Date, required: true},    //Using seconds epoch time; this might need changed to Number input...
   totalDistance: {amount: Number, unit: String},
   totalTime: {amount: Number, unit: String},
   averagePace: {amount: Number, unit: String},
