@@ -112,6 +112,35 @@ usersRouter.put('/', verifyTokenMiddleware, (req, res, next) => {
     }
   }
 
+  //if changing password, need to encrypt it again
+  if(updateBody.password){
+    if(updateBody.password.trim() !== updateBody.password) {
+      const err = new Error('Password cannot contain whitespace');
+      err.status = 400;
+      return next(err);
+    } else if (updateBody.password.length < 8){
+      const err = new Error('Password must be at least 8 characters long.');
+      err.status = 400;
+      return next(err);
+    } else if (updateBody.password.length > 72){
+      const err = new Error('Password must be less than 72 characters long.');
+      err.status = 400;
+      return next(err);
+    }
+
+    return bcrypt.hash(updateBody.password, 8)
+      .then(hashedPassword => {
+        return User.findOneAndUpdate(
+          {username},
+          {password: hashedPassword},
+          {new: true}
+        );
+      })
+      .then(updatedUser => res.json(updatedUser))
+      .catch(err => next(err));
+  }
+
+  //if changing username, email, or preferences
   return User.findOneAndUpdate(
     {username},
     updateBody,
