@@ -100,6 +100,18 @@ usersRouter.put('/', verifyTokenMiddleware, (req, res, next) => {
     return next(err);
   }
 
+  if(updateBody.username){
+    if(updateBody.username.length < 1){
+      const err = new Error('Usernames must be at least 1 character.');
+      err.status = 400;
+      return next(err);
+    } else if (updateBody.username.trim() !== updateBody.username) {
+      const err = new Error('Usernames should not contain whitespace.');
+      err.status = 400;
+      return next(err);
+    }
+  }
+
   return User.findOneAndUpdate(
     {username},
     updateBody,
@@ -111,11 +123,19 @@ usersRouter.put('/', verifyTokenMiddleware, (req, res, next) => {
       } else if (!updateBody.username) {
         return res.json(result);
       } else {
-        return createJwtToken(result.username)
-          .then(token => res.json(token));
+        const token = createJwtToken(result.username);
+        res.json(token);
       }
     })
-    .catch(err => next(err));
+    .catch(err => {
+      if (err.code === 11000) {
+        const error = new Error('Username already exists.');
+        error.status = 422;
+        return next(error);
+      } else {
+        return next(err);
+      }
+    });
 });
 
 
