@@ -9,7 +9,7 @@ const app = express();
 mongoose.Promise = global.Promise;
 
 const loginRouter = require('./routes/login');
-const registerRouter = require('./routes/register');
+const usersRouter = require('./routes/users');
 const workoutRouter = require('./routes/workouts');
 const {CLIENT_ORIGIN, MONGODB_URI, PORT} = require('./config');
 
@@ -20,7 +20,7 @@ app.use(express.json());      //middleware that parses all requests as json
 app.use(cors({origin: CLIENT_ORIGIN}));
 
 app.use('/login', loginRouter);
-app.use('/register', registerRouter);
+app.use('/users', usersRouter);
 app.use('/workouts', workoutRouter);
 
 

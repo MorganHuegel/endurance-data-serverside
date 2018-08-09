@@ -8,6 +8,7 @@ const workoutSchema = new mongoose.Schema({
   totalDistance: {amount: Number, unit: String},
   totalTime: {amount: Number, unit: String},
   averagePace: {amount: Number, unit: String},
+  maximumPace: {amount: Number, unit: String},
   averageWatts: Number,
   maximumWatts: Number,
   totalElevation: {amount: Number, unit: String},

@@ -3,13 +3,13 @@
 const bcrypt = require('bcryptjs');
 const express = require('express');
 const mongoose = require('mongoose');
-const registerRouter = express.Router();
+const usersRouter = express.Router();
 
 const User = require('../db-models/users-model');
-const { createJwtToken } = require('../auth/jwt');
+const { createJwtToken, verifyTokenMiddleware } = require('../auth/jwt');
 
 
-registerRouter.post('/', (req, res, next) => {
+usersRouter.post('/', (req, res, next) => {
   const {username, password} = req.body;
 
   //validate incoming username exists
@@ -75,4 +75,48 @@ registerRouter.post('/', (req, res, next) => {
 });
 
 
-module.exports = registerRouter;
+
+
+usersRouter.put('/', verifyTokenMiddleware, (req, res, next) => {
+  const username = req.username;
+  const updateBody = req.body;
+
+  console.log('USERNAME____', username, 'UPDATE BODY_____',updateBody)
+
+  const possibleUpdates = [
+    'username', 
+    'password', 
+    'email', 
+    'preferences', 
+    'workouts'
+  ];
+
+  //checks that each field in updateBody is actually a field in the database
+  if ( !Object.keys(updateBody)
+    .every(field => possibleUpdates.includes(field))
+  ) {
+    const err = new Error('Update body contains fields that are not in the database');
+    err.status = 400;
+    return next(err);
+  }
+
+  return User.findOneAndUpdate(
+    {username},
+    updateBody,
+    {new: true}
+  )
+    .then(result => {
+      if (!result) {
+        return next();
+      } else if (!updateBody.username) {
+        return res.json(result);
+      } else {
+        return createJwtToken(result.username)
+          .then(token => res.json(token));
+      }
+    })
+    .catch(err => next(err));
+});
+
+
+module.exports = usersRouter;

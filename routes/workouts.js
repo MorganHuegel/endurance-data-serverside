@@ -46,7 +46,6 @@ workoutRouter.delete('/:id', verifyTokenMiddleware, (req, res, next) => {
       return Workout.findOneAndDelete({userId, _id: workoutId});
     })
     .then( successfulDelete => {
-      console.log('SUCCESSFUL DELETE', successfulDelete);
       if(!successfulDelete){
         const err = new Error('Workout ID not found.');
         err.status = 404;
@@ -54,7 +53,7 @@ workoutRouter.delete('/:id', verifyTokenMiddleware, (req, res, next) => {
       }
       return User.findOneAndUpdate(
         {_id: userId},
-        {$pull: {workouts: workoutId}},
+        {$pull: {workouts: workoutId}}, //pulls workout ID out of User collection
         {new: true}
       );
     })
