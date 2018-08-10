@@ -77,7 +77,6 @@ workoutRouter.post('/', verifyTokenMiddleware, (req, res, next) => {
   let workoutId;
 
   const newWorkout = req.body; //userId and date should be appended to request body on the client-side
-  console.log('NEW WORKOUT',newWorkout);
   Workout.create(newWorkout) //creates in workout collection
     .then(result => {
       workoutId = result.id;
@@ -90,7 +89,6 @@ workoutRouter.post('/', verifyTokenMiddleware, (req, res, next) => {
       return res.json({id: workoutId});  //sends the new id back, where client-side appends it to newWorkout Object before updating redux state
     })
     .catch(err => {
-      console.log('ERR',err);
       next(err);
     });
 });
