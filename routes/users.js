@@ -48,11 +48,12 @@ usersRouter.post('/', (req, res, next) => {
   }
 
   //encrypts password, then stores in User collection of database
-  bcrypt.hash(password, 8)
+  return bcrypt.hash(password, 8)
     .then(hashedPassword => {
+
       return User.create({
         username,
-        password: hashedPassword, 
+        password: hashedPassword,
         workouts: [],
         preferences: []
       });

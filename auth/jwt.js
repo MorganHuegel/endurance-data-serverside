@@ -1,9 +1,9 @@
 'use strict';
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const JWT_SECRET = require('dotenv').config().parsed.JWT_SECRET;
 
-const { JWT_SECRET, JWT_EXPIRY } = require('../config');
-
+// const { JWT_SECRET, JWT_EXPIRY } = require('../config');
+const { JWT_EXPIRY } = require('../config');
 
 const jwtAuthorize = function(token){
   return jwt.verify(token, JWT_SECRET, {
@@ -18,7 +18,8 @@ const jwtAuthorize = function(token){
 };
 
 const createJwtToken = function(user){
-  return jwt.sign({user}, JWT_SECRET, {
+  //const username = JSON.stringify(user);
+  return jwt.sign({username: user}, JWT_SECRET, {
     algorithm: 'HS256',
     expiresIn: JWT_EXPIRY,
     subject: user
@@ -37,7 +38,7 @@ function verifyTokenMiddleware (req, res, next) {
     err.status = 401;
     return next(err);
   } else {
-    req.username = currentUser.user;
+    req.username = currentUser.username;
     return next();
   }
 }

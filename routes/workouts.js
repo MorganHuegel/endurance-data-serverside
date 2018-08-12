@@ -11,7 +11,7 @@ const Workout = require('../db-models/workouts-model');
 
 workoutRouter.get('/', verifyTokenMiddleware, (req, res, next) => {
   const user = req.username;
-
+  console.log('HEADERS',req.headers);
   return User.findOne({username: user})
     .populate({path:'workouts', options:{sort: {date: -1}} })
     .then(userData => {

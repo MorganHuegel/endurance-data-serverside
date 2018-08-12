@@ -72,3 +72,5 @@ if (require.main === module && process.env.NODE_ENV !== 'test'){
   serverListen();
   dbListen();
 }
+
+module.exports = app;
