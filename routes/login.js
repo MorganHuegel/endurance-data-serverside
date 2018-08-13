@@ -70,9 +70,11 @@ loginRouter.post('/', (req, res, next) => {
     });
 });
 
+
+
+////// ENDPOINT NOT USED YET ////////////
 loginRouter.get('/refresh', verifyTokenMiddleware, (req, res, next) => {
   const user = req.username;
-  console.log('USER', user);
 
   try {
     return res.json(createJwtToken(user));
