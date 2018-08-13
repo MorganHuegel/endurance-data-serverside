@@ -154,7 +154,7 @@ describe('/USERS ENDPOINT', function(){
         });
     });
 
-    it.only('should correctly update an email address', function(){
+    it('should correctly update an email address', function(){
       const newEmail = 'Pr0bAblY!N0T*A/rEaL/Email@foo.com';
 
       return chai.request(app).put('/users').send({email: newEmail})
