@@ -76,6 +76,7 @@ describe('/USERS ENDPOINT', function(){
           expect(workoutList).to.deep.equal(sortedList);
           //makes sure each workout belongs to the user in the token
           workoutList.forEach(function(workout) {
+            expect(workout).to.be.a('object');
             expect(workout.userId).to.equal(user.id);
           });
         });
@@ -129,6 +130,84 @@ describe('/USERS ENDPOINT', function(){
               expect(workoutResponse[field].unit).to.equal(newWorkout[field].unit);
             }
           });
+        });
+    });
+  });
+
+  describe('DELETE to /workouts', function(){
+    it('should delete a workout from Workout collection and pull it from User', function(){
+      let preCount;
+      let deletedWorkout;
+
+      return Promise.all([
+        User.findById(user.id),
+        Workout.findOne({userId: user.id})
+      ])
+        .then( function([userRes, workoutRes]){
+          preCount = userRes.workouts.length;   //so we can check the length after the deletion
+          deletedWorkout = workoutRes;
+          return chai.request(app).del(`/workouts/${deletedWorkout.id}`).set('authorization', `Bearer ${webToken}`);
+        })
+        .then(function(apiResponse){
+          expect(apiResponse).to.have.status(204);
+          expect(apiResponse.ok).to.equal(true);
+          return Promise.all([
+            User.findById(user.id),
+            Workout.findById(deletedWorkout.id)
+          ]);
+        })
+        .then(function([userResp, workoutResp]){
+          expect(userResp.workouts.length).to.equal(preCount - 1); //makes sure it deletes from Users collection
+          expect(userResp.workouts.includes(deletedWorkout.id)).to.equal(false);
+          expect(workoutResp).to.be.null; //makes sure it deletes from Workouts collection
+        });
+
+    });
+  });
+
+
+  describe('PUT to /workouts', function(){
+    it('should `replace` a workout when given a new workout body object', function(){
+      const updateWorkout = {
+        userId: user.id,
+        hoursOfSleep: 5,
+        waterDrank: {amount: 8, unit: 'cups'},
+        averageHeartrate: 170,
+        tss: 200,
+        totalTime: {amount: 2, unit: 'hours'}
+      };
+
+      return Workout.findOne({userId: user.id})
+        .then(function(workout){
+          updateWorkout.id = workout.id;
+          return chai.request(app).put('/workouts').send(updateWorkout)
+            .set('authorization', `Bearer ${webToken}`)
+            .set('content-type', 'application/json');
+        })
+        .then(function(apiRes){
+          expect(apiRes).to.be.json;
+          expect(apiRes.ok).to.be.true;
+          Object.keys(updateWorkout).forEach(key => {
+            expect(apiRes.body).to.contain.keys(key);
+            expect(apiRes.body[key]).to.deep.equal(updateWorkout[key]);
+          });
+          return Workout.findById(apiRes.body.id);
+        })
+        .then(function(dbRes){
+          expect(dbRes).to.exist;
+          Object.keys(updateWorkout).forEach(key => {
+            expect(dbRes[key]).to.exist;
+            if(key === 'id' || key === 'userId'){
+              expect(dbRes[key].toString()).to.equal(updateWorkout[key]);
+            } else if(typeof dbRes[key] === 'object'){
+              expect(dbRes[key].amount).to.equal(updateWorkout[key].amount);
+              expect(dbRes[key].unit).to.equal(updateWorkout[key].unit);
+            } else {
+              expect(dbRes[key]).to.equal(updateWorkout[key]);
+            }
+          });
+          //must parse database response as a json so that meta-data keys are not included
+          expect(Object.keys(dbRes.toJSON()).length).to.equal(Object.keys(updateWorkout).length);
         });
     });
   });
