@@ -24,6 +24,7 @@ describe('/USERS ENDPOINT', function(){
   let user;
 
   before(function(){
+    this.timeout(30000);
     return mongoose.connect(TEST_MONGODB_URI)
       .then(mongoose.connection.db.dropDatabase());
   });
@@ -44,10 +45,12 @@ describe('/USERS ENDPOINT', function(){
   });
 
   afterEach(function(){
+    this.timeout(30000);
     return mongoose.connection.db.dropDatabase();
   });
 
   after(function(){
+    this.timeout(30000);
     return mongoose.disconnect();
   });
 

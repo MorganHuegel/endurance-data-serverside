@@ -17,6 +17,9 @@ const seedWorkouts = require('../seed-data/seed-workouts.json');
 const expect = chai.expect;
 chai.use(chaiHttp);
 
+const serializeDate = function(date){
+  return moment(date).format('x');
+}
 
 
 describe('/USERS ENDPOINT', function(){
@@ -51,7 +54,7 @@ describe('/USERS ENDPOINT', function(){
     return mongoose.disconnect();
   });
 
-  describe.only('GET to /workouts', function(){
+  describe('GET to /workouts', function(){
     it('should return user data with workouts populated', function(){
       return chai.request(app).get('/workouts')
         .set('authorization', `Bearer ${webToken}`)
@@ -74,6 +77,57 @@ describe('/USERS ENDPOINT', function(){
           //makes sure each workout belongs to the user in the token
           workoutList.forEach(function(workout) {
             expect(workout.userId).to.equal(user.id);
+          });
+        });
+    });
+  });
+
+  describe('POST to /workouts', function(){
+    it('should add workout to Workouts collection and workouts array of User', function(){
+      const newWorkout = {
+        totalTime: {amount: 60, unit: 'minutes'},
+        hoursOfSleep: 10,
+        userId: user.id,
+        date : '2015-07-30T00:00:00Z'
+      };
+
+      let workoutId;
+      
+      return chai.request(app).post('/workouts').send(newWorkout)
+        .set('authorization', `Bearer ${webToken}`)
+        .set('content-type', 'application/json')
+        .then(function(apiResponse){
+          workoutId = apiResponse.body.id;
+          expect(apiResponse).to.be.json;
+          expect(apiResponse).to.have.status(200);
+          expect(apiResponse.body).to.contain.keys('userId', 'id', 'date');
+          expect(apiResponse.body.userId).to.equal(user.id);
+          Object.keys(newWorkout).forEach(field => {
+            if(field === 'date'){
+              expect(serializeDate(newWorkout.date)).to.equal(serializeDate(apiResponse.body.date));
+            } else {
+              expect(newWorkout[field]).to.deep.equal(apiResponse.body[field]);
+            }
+          });
+          return Promise.all([
+            User.findById(user.id),
+            Workout.findById(workoutId)
+          ]); //makes sure it gets added to database in both collections
+        })
+        .then(function([userResponse, workoutResponse]){
+          expect(userResponse.workouts).to.include(workoutId); //reference is inserted into proper User data
+          expect(workoutResponse).to.exist; //makes sure inserted into database
+          Object.keys(newWorkout).forEach(field => {
+            if(field === 'userId'){
+              expect(workoutResponse.userId.toString()).to.equal(newWorkout.userId.toString());
+            } else if (field === 'date'){
+              expect(serializeDate(workoutResponse.date)).to.equal(serializeDate(workoutResponse.date));
+            } else if (typeof newWorkout[field] !== 'object'){
+              expect(workoutResponse[field].toString()).to.equal(newWorkout[field].toString());
+            } else {
+              expect(workoutResponse[field].amount).to.equal(newWorkout[field].amount);
+              expect(workoutResponse[field].unit).to.equal(newWorkout[field].unit);
+            }
           });
         });
     });
