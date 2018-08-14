@@ -24,7 +24,7 @@ describe('/LOGIN ENDPOINT', function(){
   before(function(){
     this.timeout(30000);
     return mongoose.connect(TEST_MONGODB_URI)
-      .then(mongoose.connection.db.dropDatabase());
+      .then( () => mongoose.connection.db.dropDatabase());
   });
 
   beforeEach(function(){

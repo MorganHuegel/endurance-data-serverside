@@ -28,7 +28,7 @@ describe('/USERS ENDPOINT', function(){
 
   before(function(){
     return mongoose.connect(TEST_MONGODB_URI)
-      .then(mongoose.connection.db.dropDatabase());
+      .then( () => mongoose.connection.db.dropDatabase());
   });
 
   beforeEach(function(){
