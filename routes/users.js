@@ -60,7 +60,6 @@ usersRouter.post('/', (req, res, next) => {
     })
     //creates web token, sends it back to client-side
     .then( (res) => {
-      console.log('RES',res);
       return createJwtToken(username);
     })
     .then(token => {
