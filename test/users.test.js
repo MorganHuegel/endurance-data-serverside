@@ -153,7 +153,7 @@ describe('/USERS ENDPOINT', function(){
     });
 
 
-    it('should return assign a new user empty workout array and empty preferences', () => {
+    it('should assign a new user empty workout array and empty preferences', () => {
       return chai.request(app).post('/users').send({username: 'billy', password: '12345678'})
         .then(() => {
           return User.findOne({username: 'billy'});
@@ -167,7 +167,7 @@ describe('/USERS ENDPOINT', function(){
     });
 
 
-    it.only('should return appropriate error if username is already taken', function(){
+    it('should return appropriate error if username is already taken', function(){
       let user;
 
       return User.findOne()

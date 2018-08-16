@@ -156,10 +156,15 @@ usersRouter.put('/', verifyTokenMiddleware, (req, res, next) => {
       }
     })
     .catch(err => {
-      if (err.code === 11000) {
-        const error = new Error('Username already exists.');
-        error.status = 422;
-        return next(error);
+      if(err.name === 'ValidationError'){
+        const newErr = new Error('Username already exists');
+        newErr.status = 422;
+        return next(newErr);
+      //}
+      // if (err.code === 11000) {
+      //   const error = new Error('Username already exists.');
+      //   error.status = 422;
+      //   return next(error);
       } else {
         return next(err);
       }

@@ -22,7 +22,7 @@ const serializeDate = function(date){
 }
 
 
-describe('/USERS ENDPOINT', function(){
+describe('/WORKOUTS ENDPOINT', function(){
   let webToken;
   let user;
 

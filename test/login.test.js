@@ -82,6 +82,21 @@ describe('/LOGIN ENDPOINT', function(){
           expect(getResp.body.username).to.equal(newUser.username);
         });
     });
+
+    it('should response with appropriate error if password is not correct', function(){
+      return chai.request(app).post('/users').send(newUser)
+        .then(function(){
+          return chai.request(app).post('/login').send({
+            username: newUser.username, 
+            password: 'derpyDerpStupidHead'});
+        })
+        .then(function(loginRes){
+          expect(loginRes).to.be.json;
+          expect(loginRes).to.have.status(400);
+          expect(loginRes.ok).to.equal(false);
+          expect(loginRes.body.message).to.equal('Username and password do not match');
+        });
+    });
   });
 
 });
