@@ -4,6 +4,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const JWT_SECRET = require('dotenv').config().parsed.JWT_SECRET;
 
 const app = require('../server');
@@ -66,6 +67,119 @@ describe('/USERS ENDPOINT', function(){
           expect(response).to.have.status(200);
           expect(response.ok).to.equal(true);
           expect(jwt.verify(response.body, JWT_SECRET)).to.have.keys('username', 'sub', 'iat', 'exp');
+        });
+    });
+
+    it('should respond with appropriate error if username is not supplied', function(){
+      return chai.request(app).post('/users').send({username: '', password: '12345678'})
+        .then(function(response){
+          expect(response).to.be.json;
+          expect(response).to.have.status(400);
+          expect(response.body.message).to.equal('Username is required');
+          expect(response.ok).to.equal(false);
+        });
+    });
+
+    it('should respond with appropriate error if username has whitespace', function(){
+      return chai.request(app).post('/users').send({username: ' billy', password: '12345678'})
+        .then(function(response){
+          expect(response).to.be.json;
+          expect(response).to.have.status(400);
+          expect(response.body.message).to.equal('Username must not contain whitespace');
+          expect(response.ok).to.equal(false);
+          return User.findOne({username: ' billy'});
+        })
+        .then(function(dbResult){
+          expect(dbResult).to.be.null;
+        });
+    });
+
+    it('should respond with appropriate error if password is not defined', function(){
+      return chai.request(app).post('/users').send({username: 'billy', password: ''})
+        .then(function(response){
+          expect(response).to.be.json;
+          expect(response).to.have.status(400);
+          expect(response.body.message).to.equal('Password is required');
+          expect(response.ok).to.equal(false);
+          return User.findOne({username: 'billy'});
+        })
+        .then(function(dbResult){
+          expect(dbResult).to.be.null;
+        });
+    });
+
+    it('should respond with appropriate error if password is too short', function(){
+      return chai.request(app).post('/users').send({username: 'billy', password: '1234567'})
+        .then(function(response){
+          expect(response).to.be.json;
+          expect(response).to.have.status(400);
+          expect(response.body.message).to.equal('Password must be at least 8 characters long');
+          expect(response.ok).to.equal(false);
+          return User.findOne({username: 'billy'});
+        })
+        .then(function(dbResult){
+          expect(dbResult).to.be.null;
+        });
+    });
+
+    it('should respond with appropriate error if password is too long', function(){
+      const longPassword = '1234567890123456789012345678901234567890123456789012345678901234567890123';
+      return chai.request(app).post('/users').send({username: 'billy', password: longPassword})
+        .then(function(response){
+          expect(response).to.be.json;
+          expect(response).to.have.status(400);
+          expect(response.body.message).to.equal('Password must be less than 72 characters long');
+          expect(response.ok).to.equal(false);
+          return User.findOne({username: 'billy'});
+        })
+        .then(function(dbResult){
+          expect(dbResult).to.be.null;
+        });
+    });
+
+    it('should store only the encrypted password when provided a string', () => {
+      const password = '12345678';
+
+      return chai.request(app).post('/users').send({username: 'billy', password})
+        .then(() => {
+          return User.findOne({username: 'billy'}).select({'password': true});
+        })
+        .then(dbRes => {
+          expect(dbRes).to.be.not.null;
+          expect(dbRes.password).to.not.equal(password);
+          return bcrypt.compare(password, dbRes.password);
+        })
+        .then(bool => expect(bool).to.equal(true));
+    });
+
+
+    it('should return assign a new user empty workout array and empty preferences', () => {
+      return chai.request(app).post('/users').send({username: 'billy', password: '12345678'})
+        .then(() => {
+          return User.findOne({username: 'billy'});
+        })
+        .then(dbRes => {
+          expect(dbRes.preferences).to.be.not.null;
+          expect(dbRes.workouts).to.be.not.null;
+          expect(dbRes.preferences).to.deep.equal([]);
+          expect(dbRes.workouts).to.deep.equal([]);
+        });
+    });
+
+
+    it.only('should return appropriate error if username is already taken', function(){
+      let user;
+
+      return User.findOne()
+        .then(dbRes => {
+          user = dbRes;
+          return chai.request(app).post('/users').send({username: user.username, password: '12345678'});
+        })
+        .then(apiRes => {
+          expect(apiRes).to.have.status(422);
+          expect(apiRes).to.be.json;
+          expect(apiRes.body.message).to.equal('Username already exists');
+          expect(apiRes.ok).to.equal(false);
         });
     });
 

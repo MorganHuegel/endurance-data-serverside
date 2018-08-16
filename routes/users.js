@@ -59,14 +59,15 @@ usersRouter.post('/', (req, res, next) => {
       });
     })
     //creates web token, sends it back to client-side
-    .then( () => {
+    .then( (res) => {
+      console.log('RES',res);
       return createJwtToken(username);
     })
     .then(token => {
       return res.json(token);
     })
     .catch(err => {
-      if(err.code === 11000){   //error code 11000 comes from database error
+      if(err.name === 'ValidationError'){
         const newErr = new Error('Username already exists');
         newErr.status = 422;
         return next(newErr);
