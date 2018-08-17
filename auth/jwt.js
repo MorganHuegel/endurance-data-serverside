@@ -1,6 +1,7 @@
 'use strict';
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = require('dotenv').config().parsed.JWT_SECRET;
+require('dotenv').config();
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // const { JWT_SECRET, JWT_EXPIRY } = require('../config');
 const { JWT_EXPIRY } = require('../config');
