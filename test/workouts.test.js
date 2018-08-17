@@ -20,7 +20,7 @@ chai.use(chaiHttp);
 
 const serializeDate = function(date){
   return moment(date).format('x');
-}
+};
 
 
 describe('/WORKOUTS ENDPOINT', function(){
@@ -52,7 +52,8 @@ describe('/WORKOUTS ENDPOINT', function(){
   });
 
   after(function(){
-    return mongoose.disconnect();
+    return mongoose.disconnect()
+      .then( ()=> process.exit());
   });
 
   describe('GET to /workouts', function(){
