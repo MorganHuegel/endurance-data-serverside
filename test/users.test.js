@@ -5,8 +5,9 @@ const chaiHttp = require('chai-http');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const JWT_SECRET = process.env.JWT_SECRET || require('dotenv').config().parsed.JWT_SECRET;
+require('dotenv').config();
 
+const JWT_SECRET = process.env.JWT_SECRET;
 const app = require('../server');
 const { TEST_MONGODB_URI, JWT_EXPIRY } = require('../config');
 const User = require('../db-models/users-model');
