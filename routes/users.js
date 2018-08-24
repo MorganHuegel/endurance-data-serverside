@@ -156,15 +156,14 @@ usersRouter.put('/', verifyTokenMiddleware, (req, res, next) => {
       }
     })
     .catch(err => {
-      if(err.name === 'ValidationError'){
+      if(err.name === 'ValidationError'){ //this Validation Error only occurs during testing with Mocha, not in the Live App
         const newErr = new Error('Username already exists');
         newErr.status = 422;
         return next(newErr);
-      //}
-      // if (err.code === 11000) {
-      //   const error = new Error('Username already exists.');
-      //   error.status = 422;
-      //   return next(error);
+      } else if (err.code === 11000) { //this Error Code is what will appear in the live app
+        const error = new Error('Username already exists.');
+        error.status = 422;
+        return next(error);
       } else {
         return next(err);
       }
