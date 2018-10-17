@@ -46,7 +46,6 @@ workoutRouter.delete('/:id', verifyTokenMiddleware, (req, res, next) => {
   return User.findOne({username: user})
     .then(userObj => {
       userId = userObj.id;
-      
       // deletes workout only if ID in parameters 
       // belongs to the user in the webtoken
       return Workout.findOneAndDelete({userId, _id: workoutId});
@@ -98,7 +97,6 @@ workoutRouter.post('/', verifyTokenMiddleware, (req, res, next) => {
 workoutRouter.put('/', verifyTokenMiddleware, (req, res, next) => {
   const username = req.username;
   const workoutUpdate = req.body;
-
   return User.findOne({_id: workoutUpdate.userId, username}) //verifies that the workout belongs to the user with the token
     .then(result => {
       if(!result){

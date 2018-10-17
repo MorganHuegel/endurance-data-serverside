@@ -19,6 +19,7 @@ app.use(morgan('combined'));  //logs when requests come in
 app.use(express.json());      //middleware that parses all requests as json
 app.use(cors({origin: CLIENT_ORIGIN}));
 
+
 app.use('/login', loginRouter);
 app.use('/users', usersRouter);
 app.use('/workouts', workoutRouter);

@@ -28,12 +28,13 @@ const workoutSchema = new mongoose.Schema({
   notes: String
 });
 
-workoutSchema.set('toObject', {
+workoutSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
   transform: (doc, ret) => {
     ret.id = ret._id,
     delete ret._id;
+    return ret;
   }
 });
 
